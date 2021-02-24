@@ -43,7 +43,6 @@ public class Drag_Engenhagem : MonoBehaviour,IPointerDownHandler,IBeginDragHandl
     {
         _canvasGroup.blocksRaycasts = true;
         _myRectTransform.SetParent(ult_SlotScript.myRectTransform);
-        _myRectTransform.anchoredPosition =new Vector2(0,0);
         _canvasGroup.alpha = 1f;
         GerencerState(state);
     }
@@ -62,21 +61,51 @@ public class Drag_Engenhagem : MonoBehaviour,IPointerDownHandler,IBeginDragHandl
         switch(newstate)
         {
             case EnumEngenhagem.Slot_UI:
+                transform.rotation = new Quaternion(0, 0, 0, 0);
                 my_Imagem.sprite = imagem_SlotUI;
                 break;
             case EnumEngenhagem.Slot_Engenhagem:
                 my_Imagem.sprite = image_SlotEngenhagem;
+                antiHorario = 1;
                 break;
             case EnumEngenhagem.No_Slot:
                 _canvasGroup.blocksRaycasts = false;
                 _myRectTransform.SetParent(_canvas.transform);
                 _canvasGroup.alpha = 0.5f;
                  my_Imagem.sprite = imagem_SlotUI;
+                transform.rotation = new Quaternion(0, 0, 0, 0);
+                break;
+            case EnumEngenhagem.Slot_EngenhagemAntiHorario:
+                my_Imagem.sprite = image_SlotEngenhagem;
+                antiHorario = -1;
                 break;
         }
 
-        ManagerSlot.instancie.Contador(newstate);
+        State = newstate;    
+        ManagerSlot.instancie.Contador();
     }
 
+    public void StartRotate()
+    {
+        girar = true;   
+    }
+
+    public void StopRotate()
+    {
+        girar = false;
+    }
+
+    private void Update()
+    {
+        if (girar)
+        {
+            transform.Rotate(new Vector3(0, 0, -1 * antiHorario)) ;
+        }
+    }
+
+
+    int antiHorario = 1;
+    bool girar;
     EnumEngenhagem state;
+    public EnumEngenhagem State { get ; set; }
 }

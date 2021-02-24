@@ -7,5 +7,6 @@ public enum EnumEngenhagem
 {
     Slot_UI,
     Slot_Engenhagem,
+    Slot_EngenhagemAntiHorario,
     No_Slot
 }

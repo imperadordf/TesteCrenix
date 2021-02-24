@@ -10,7 +10,7 @@ public class Slot_Engenhagem : MonoBehaviour,IDropHandler
     [SerializeField]
     EnumEngenhagem Slot;
     public bool isVoid=true;
-    public bool antiHorario;
+   
     public void OnDrop(PointerEventData eventData)
     {
         if (isVoid)
@@ -20,13 +20,5 @@ public class Slot_Engenhagem : MonoBehaviour,IDropHandler
        
     }
 
-    public void StartRotate()
-    {
-        Debug.Log("Rodando");
-    }
-
-    public void StopRotate()
-    {
-        Debug.Log("Paramos");
-    }
+   
 }

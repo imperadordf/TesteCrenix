@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ManagerSlot : MonoBehaviour
 {
@@ -24,48 +25,40 @@ public class ManagerSlot : MonoBehaviour
         }
     }
 
-    public void Contador(EnumEngenhagem state)
+    public void Contador()
     {
-       
-            switch (state)
+
+        foreach (Drag_Engenhagem draglist in drag_Engenhagem)
+        {
+            if (draglist.State == EnumEngenhagem.Slot_Engenhagem || draglist.State == EnumEngenhagem.Slot_EngenhagemAntiHorario)
             {
-                case EnumEngenhagem.Slot_Engenhagem:
-                    contador_Engenhagem++;
-                    ult_State = state;
-                    break;
-                case EnumEngenhagem.Slot_UI:
-                    contador_Engenhagem--;
-                    ult_State = state;
-                    break;
-                case EnumEngenhagem.No_Slot:
-                    StopRotate();
-                    break;
+                contador_Engenhagem++;
             }
+            else
+            {
+                contador_Engenhagem = 0;
+            }
+        }
+
+        if (contador_Engenhagem >= drag_Engenhagem.Count)
+        {
+            foreach (Drag_Engenhagem draglist in drag_Engenhagem)
+            {
+                draglist.StartRotate();
+            }
+            text_Nugget.text = "VOCE CONCLUIU A TASK";
+        }
+        else
+        {
+            foreach (Drag_Engenhagem draglist in drag_Engenhagem)
+            {
+                draglist.StopRotate();
+            }
+            text_Nugget.text = "ENCAIXE AS ENGRENAGENS EM QUALQUER ORDEM!";
+        }
+       
       
-
-        if (!rotate && contador_Engenhagem == 5 && state != EnumEngenhagem.No_Slot)
-            StartEngenhagem();
-        else if (rotate)
-            StopRotate();
     } 
-
-    private void StartEngenhagem()
-    {
-        foreach (Slot_Engenhagem slots in slotList_Engenhagem)
-        {
-            slots.StartRotate();
-        }
-        rotate = true;
-    }
-
-    private void StopRotate()
-    {
-        foreach (Slot_Engenhagem slots in slotList_Engenhagem)
-        {
-            slots.StopRotate();
-        }
-        rotate = false;
-    }
     
     public void ResetGame()
     {
@@ -73,12 +66,14 @@ public class ManagerSlot : MonoBehaviour
     }
 
     [SerializeField]
+    List<Drag_Engenhagem> drag_Engenhagem = new List<Drag_Engenhagem>();
+
+    [SerializeField]
     List<Slot_Engenhagem> slotList_UI = new List<Slot_Engenhagem>();
 
     [SerializeField]
-    List<Slot_Engenhagem> slotList_Engenhagem = new List<Slot_Engenhagem>();
-
-    EnumEngenhagem ult_State;
-    int contador_Engenhagem = 0;
-    bool rotate;
+    public TextMeshProUGUI text_Nugget;
+   
+   int contador_Engenhagem = 0;
+    
 }
